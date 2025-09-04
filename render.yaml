@@ -1,0 +1,64 @@
+services:
+  # Main Backend Service
+  - type: web
+    name: figmaapi-docgen-backend
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 1h
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+      - key: DATABASE_URL
+        value: postgresql://user:password@host:5432/database
+      - key: REDIS_HOST
+        value: redis://redis:6379
+      - key: REDIS_PORT
+        value: 6379
+      - key: ML_SERVICE_URL
+        value: https://figmaapi-docgen-ml.onrender.com
+      - key: ML_SERVICE_TIMEOUT
+        value: 30000
+      - key: ML_TRAINING_TIMEOUT
+        value: 60000
+      - key: FRONTEND_URL
+        value: https://your-frontend-url.com
+      - key: CORS_ORIGIN
+        value: https://your-frontend-url.com
+
+  # ML Service
+  - type: web
+    name: figmaapi-docgen-ml
+    env: node
+    plan: free
+    buildCommand: cd ml-service && npm install && npm run build
+    startCommand: cd ml-service && npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3002
+      - key: ML_MODEL_PATH
+        value: /opt/render/project/src/models
+      - key: ML_TRAINING_DATA_PATH
+        value: /opt/render/project/src/data
+    disk:
+      name: ml-models
+      mountPath: /opt/render/project/src/models
+      sizeGB: 1
+
+  # Redis Cache (if needed)
+  - type: redis
+    name: figmaapi-docgen-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru 

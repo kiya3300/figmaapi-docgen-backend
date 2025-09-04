@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  name          String
+  avatarUrl     String?  @map("avatar_url")
+  plan          String   @default("free")
+  emailVerified Boolean  @default(false) @map("email_verified")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  projects     Project[]
+  apiKeys      ApiKey[]
+  cacheEntries CacheEntry[]
+
+  @@map("users")
+}
+
+model Project {
+  id            String   @id @default(uuid())
+  name          String
+  description   String?
+  ownerId       String   @map("owner_id")
+  figmaFileId   String?  @map("figma_file_id")
+  figmaFileName String?  @map("figma_file_name")
+  status        String   @default("active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  owner         User           @relation(fields: [ownerId], references: [id])
+  documentation Documentation[]
+
+  @@map("projects")
+}
+
+model Documentation {
+  id        String   @id @default(uuid())
+  projectId String   @map("project_id")
+  title     String
+  content   Json
+  version   Int      @default(1)
+  format    String   @default("openapi")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  project Project @relation(fields: [projectId], references: [id])
+
+  @@map("documentation")
+}
+
+model ApiKey {
+  id          String    @id @default(uuid())
+  userId      String    @map("user_id")
+  name        String
+  keyHash     String    @map("key_hash")
+  permissions Json?
+  isActive    Boolean   @default(true) @map("is_active")
+  lastUsed    DateTime? @map("last_used")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("api_keys")
+}
+
+model CacheEntry {
+  id          String    @id @default(uuid())
+  cacheKey    String    @unique @map("cache_key")
+  cacheType   String    @map("cache_type")
+  data        Json
+  sizeBytes   BigInt?   @map("size_bytes")
+  hitCount    Int       @default(0) @map("hit_count")
+  lastAccessed DateTime @default(now()) @map("last_accessed")
+  expiresAt   DateTime? @map("expires_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  userId      String?   @map("user_id")
+  user        User?     @relation(fields: [userId], references: [id])
+
+  @@map("cache_entries")
+}
+
+model CacheAnalytics {
+  id              String   @id @default(uuid())
+  date            DateTime @db.Date
+  cacheType       String   @map("cache_type")
+  hits            Int      @default(0)
+  misses          Int      @default(0)
+  totalSize       BigInt   @default(0) @map("total_size")
+  avgResponseTime Int      @default(0) @map("avg_response_time_ms")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@map("cache_analytics")
+} 
