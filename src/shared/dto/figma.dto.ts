@@ -42,7 +42,7 @@ export enum AnalysisStatus {
 export class ConnectFigmaDto {
   @ApiProperty({
     description: 'Figma access token',
-    example: 'figd_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+    example: 'figd_example_token_placeholder_123456789', // Changed from actual token pattern
     minLength: 20,
     maxLength: 100,
   })
