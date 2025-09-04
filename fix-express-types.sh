@@ -1,3 +1,10 @@
+#!/bin/bash
+
+echo "🔧 Fixing Express types issue..."
+echo "==============================="
+
+# Update package.json to include @types/express in dependencies
+cat > package.json << 'PACKAGEJSON'
 {
   "name": "figmaapi-docgen-backend",
   "version": "1.0.0",
@@ -40,3 +47,11 @@
     "typescript": "^5.1.3"
   }
 }
+PACKAGEJSON
+
+echo "✅ Package.json updated with Express types!"
+echo ""
+echo "📋 Next steps:"
+echo "1. Add and commit: git add . && git commit -m 'Add Express types'"
+echo "2. Push: git push origin main"
+echo "3. Redeploy on Render"
