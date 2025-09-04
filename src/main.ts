@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
-import * as compression from 'compression';
+import compression from 'compression';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -47,7 +47,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('FigmaAPI-DocGen API')
     .setDescription('Backend API for FigmaAPI-DocGen platform')
-    .setVersion('1.0')
+    .setVersion('1.0.0')
     .addBearerAuth()
     .addServer(process.env.FRONTEND_URL || 'http://localhost:3001', 'Production Server')
     .build();
