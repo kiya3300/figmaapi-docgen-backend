@@ -33,10 +33,10 @@
     "bull": "^4.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
-    "@types/express": "^4.17.17"
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20.3.1",
     "typescript": "^5.1.3"
   }
 }
