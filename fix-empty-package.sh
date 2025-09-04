@@ -1,3 +1,10 @@
+#!/bin/bash
+
+echo "🔧 Fixing empty package.json..."
+echo "=============================="
+
+# Create a minimal, working package.json
+cat > package.json << 'PACKAGEJSON'
 {
   "name": "figmaapi-docgen-backend",
   "version": "1.0.0",
@@ -40,3 +47,36 @@
     "typescript": "^5.1.3"
   }
 }
+PACKAGEJSON
+
+# Create a simple tsconfig.json
+cat > tsconfig.json << 'TSCONFIG'
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2020",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts", "**/*.test.ts"]
+}
+TSCONFIG
+
+echo "✅ Files created successfully!"
+echo ""
+echo "📋 Next steps:"
+echo "1. Check the files: cat package.json"
+echo "2. Add and commit: git add . && git commit -m 'Fix empty package.json'"
+echo "3. Push: git push origin main"
+echo "4. Redeploy on Render"
