@@ -38,8 +38,8 @@ import {
   AuthResponseDto,
   MessageResponseDto,
   RefreshTokenDto,
-} from '@/shared/dto/auth.dto';
-import { DocumentationResponseDto } from '@/shared/dto/documentation.dto';
+} from '../../shared/dto/auth.dto';
+import { DocumentationResponseDto } from '../../shared/dto/documentation.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
