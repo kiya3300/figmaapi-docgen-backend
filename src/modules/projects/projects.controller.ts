@@ -8,10 +8,10 @@ import {
   Param, 
   UseGuards, 
   Request,
-  HttpCode,
-  HttpStatus,
-  ValidationPipe,
-  UsePipes,
+  HttpCode, 
+  HttpStatus, 
+  ValidationPipe, 
+  UsePipes, 
   Query
 } from '@nestjs/common';
 import { 
@@ -31,14 +31,7 @@ import {
 } from '@nestjs/swagger';
 import { ProjectsService } from './projects.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import {
-  CreateProjectDto,
-  UpdateProjectDto,
-  ProjectResponseDto,
-  ProjectsListResponseDto,
-  AddProjectFileDto,
-  AddProjectMemberDto
-} from '@/shared/dto/projects.dto';
+import { CreateProjectDto, UpdateProjectDto, ProjectResponseDto, ProjectsListResponseDto, AddProjectFileDto, AddProjectMemberDto, ProjectStatus, ProjectVisibility } from '../../shared/dto/projects.dto';
 
 @ApiTags('Projects')
 @Controller('projects')
